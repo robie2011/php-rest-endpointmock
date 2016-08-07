@@ -23,14 +23,16 @@ function uploadFile () {
     $imgs = array();
 
     $file = $_FILES['file'];
-    $name = uniqid('img-'.date('Ymd').'-');
     $extension = substr($file["name"], strpos($file["name"], "."));
-    $targetFilename = PATH_MEDIA_FOLDER . $name . $extension;
+    $name = uniqid('img-'.date('Ymd').'-') . $extension;
+    $targetFilename = PATH_MEDIA_FOLDER . $name;
 
     $moveResult = move_uploaded_file($file["tmp_name"], $targetFilename);
     if ($file["error"] === 0 && $moveResult) {
-        echo "OK";   
+        return $name;
     }
+
+    return null;
 }
 
 
@@ -107,6 +109,27 @@ $app->post('/servicerequest/:id/comment', function($id) use($app) {
     echo json_encode($serviceRequest);
 });
 
+$app->post('/servicerequest/:id/upload', function($id) use($app) {
+    $filename = uploadFile();
+    $serviceRequests = get_objects_from_file(PATH_SERVICEREQUESTS_DATA);
+    $serviceRequest = find_by_id($serviceRequests, $id);
+
+    $mimeType = strpos($filename, ".jp") > -1 ? "image/jpeg" : "audio/aac";
+
+    $media = array(
+        "id"=> date("U"),
+        "fileName" => $filename,
+        "content-type" => $mimeType,
+        "mediaType" => "whatever",
+        "crypticName" => $filename
+        );
+    
+    array_push($serviceRequest->media, $media);
+    put_objects_into_file($serviceRequests, PATH_SERVICEREQUESTS_DATA);
+    
+    echo json_encode($media);
+});
+
 // Offers
 $app->post('/servicerequest/:id/offer', function($id) use($app) {
     $postData = json_decode($app->request->getBody(), true);
@@ -152,17 +175,32 @@ $app->get('/bicycleProfile', function () {
     echo json_encode($bicycles);
 });
 
+$app->post('/bicycleProfile/:id/media', function ($id){
+    $bicycles = get_objects_from_file(PATH_BICYCLE_DATA);
+    $filename = uploadFile();
+    $bike = find_by_id($bicycles, $id);
+    
+    $media = array(
+        "id"=> date("U"),
+        "fileName" => $filename,
+        "content-type" => "image/jpeg",
+        "mediaType" => "whatever",
+        "crypticName" => $filename
+        );
+    array_push($bike->media, $media);
+    put_objects_into_file($bicycles, PATH_BICYCLE_DATA);
+    echo json_encode($media);
+});
+
 $app->post('/bicycleProfile', function () use ($app) {
     $bicycles = get_objects_from_file(PATH_BICYCLE_DATA);    
     $postData = json_decode($app->request->getBody(), true);
     $postData["id"] = date("U");    
+    $postData["media"] = array();    
     array_push($bicycles, $postData);
     put_objects_into_file($bicycles, PATH_BICYCLE_DATA);
     echo json_encode($postData);
 });
-
-// MEDIA
-$app->post('/api/media', 'uploadFile');
 
 // AUTHENTIFICATION
 $app->post('/oauth/token', function() use($app) {

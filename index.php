@@ -1,21 +1,8 @@
 <?php
+
+require_once 'include.php';
+
 require 'vendor/autoload.php';
-
-const PATH_BICYCLE_DATA = "data/bicycles.json";
-const PATH_SERVICEREQUESTS_DATA = "data/serviceRequests.json";
-const PATH_SERVICEPACKAGES = "data/servicePackages.json";
-const PATH_USERTELEPHONE = "data/user_telephones.json";
-const PATH_MEDIA_FOLDER = "data/media/";
-
-function get_objects_from_file($pathToFile) {
-    $data = file_get_contents($pathToFile);
-    return json_decode($data);
-}
-
-function put_objects_into_file($objects, $pathToFile) {
-    $data = json_encode($objects);
-    file_put_contents($pathToFile, $data);
-}
 
 function find_by_id($array_objects, $idToFind) {
     $element = null;
@@ -79,7 +66,7 @@ $app->get('/servicerequest', function() {
 $app->post('/servicerequest', function() use($app){
     $postData = json_decode($app->request->getBody(), true);
     $postData["id"] = date("U");
-    $postData["insertDate"] = date("U");
+    $postData["insertDate"] = date("Y-m-d H:m:s");
     $postData["media"] = array();
     $postData["serviceRequestStateId"] = 1;
     $postData["hasUpdates"] = 0;
@@ -103,6 +90,59 @@ $app->post('/servicerequest', function() use($app){
 $app->get('/servicerequest/:id', function ($id) {
     $serviceRequets = get_objects_from_file(PATH_SERVICEREQUESTS_DATA);
     $serviceRequest = find_by_id($serviceRequets, $id);
+    $serviceRequest->hasUpdates = 0;
+    put_objects_into_file($serviceRequets, PATH_SERVICEREQUESTS_DATA);
+    echo json_encode($serviceRequest);
+});
+
+$app->post('/servicerequest/:id/comment', function($id) use($app) {
+    $postData = json_decode($app->request->getBody(), true);
+    $serviceRequets = get_objects_from_file(PATH_SERVICEREQUESTS_DATA);
+    $serviceRequest = find_by_id($serviceRequets, $id);
+    
+    $comment = array('insertDate' => date("Y-m-d H:m:s"), "userName" => "Dummy User AG", "comment" => $postData["comment"]);
+    array_push($serviceRequest->comments, $comment);
+
+    put_objects_into_file($serviceRequets, PATH_SERVICEREQUESTS_DATA);
+    echo json_encode($serviceRequest);
+});
+
+// Offers
+$app->post('/servicerequest/:id/offer', function($id) use($app) {
+    $postData = json_decode($app->request->getBody(), true);
+    $serviceRequests = get_objects_from_file(PATH_SERVICEREQUESTS_DATA);
+    $serviceRequest = find_by_id($serviceRequests, $id);
+    $serviceRequest->hasUpdates = 1;
+
+    $offer = array(
+        "id" => date("U"),
+        "insertDate" => date("Y-m-d H:m:s"), 
+        "appointmentDate" => "2016-10-14 08:30", 
+        "providerName" => "Dummy Provider GmbH",
+        "offerStateId" => 1,
+        "message" => "Test Offer");
+    
+    array_push($serviceRequest->offers, $offer);
+    put_objects_into_file($serviceRequests, PATH_SERVICEREQUESTS_DATA);
+    $app->response->headers->set("Location", "/view.php");
+    echo json_encode($serviceRequest);
+});
+
+$app->get('/servicerequest/:id/serviceoffers/:offerid/deny', function($id, $offerid){
+    $serviceRequests = get_objects_from_file(PATH_SERVICEREQUESTS_DATA);
+    $serviceRequest = find_by_id($serviceRequests, $id);
+    $offer = find_by_id($serviceRequest->offers, $offerid);
+    $offer->offerStateId = 3;
+    put_objects_into_file($serviceRequests, PATH_SERVICEREQUESTS_DATA);
+    echo json_encode($serviceRequest);
+});
+
+$app->get('/servicerequest/:id/serviceoffers/:offerid/accept', function($id, $offerid){
+    $serviceRequests = get_objects_from_file(PATH_SERVICEREQUESTS_DATA);
+    $serviceRequest = find_by_id($serviceRequests, $id);
+    $offer = find_by_id($serviceRequest->offers, $offerid);
+    $offer->offerStateId = 2;
+    put_objects_into_file($serviceRequests, PATH_SERVICEREQUESTS_DATA);
     echo json_encode($serviceRequest);
 });
 
@@ -139,11 +179,6 @@ $app->post('/oauth/token', function() use($app) {
 $app->get('/user/telephone', function(){
     echo file_get_contents(PATH_USERTELEPHONE);
 });
-
-$app->options('/(:name+)', function(){
-    return "OK";
-});
-
 
 $app->response->headers->set("Content-Type", "application/json");
 $app->response->headers->set("Access-Control-Allow-Origin", "*");

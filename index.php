@@ -218,6 +218,10 @@ $app->get('/user/telephone', function(){
     echo file_get_contents(PATH_USERTELEPHONE);
 });
 
+$app->get('/user/addresses', function(){
+    echo file_get_contents(PATH_USERADDRESSES);
+});
+
 $app->response->headers->set("Content-Type", "application/json");
 $app->response->headers->set("Access-Control-Allow-Origin", "*");
 $app->run();

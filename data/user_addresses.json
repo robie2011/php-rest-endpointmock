@@ -1,0 +1,16 @@
+[
+    {
+        "id": "1",
+        "name": "Robert Rajakone",
+        "street": "Hintere Kirchgasse 11",
+        "zipCode": 5600,
+        "city": "Lenzburg"
+    },
+    {
+        "id": "2",
+        "name": "Robert Rajakone",
+        "street": "Bahnhofstrasse 10",
+        "zipCode": 4000,
+        "city": "Olten"
+    }
+]

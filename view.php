@@ -2,6 +2,7 @@
 require_once 'include.php';
 $serviceRequets = get_objects_from_file(PATH_SERVICEREQUESTS_DATA);
 $bicycles = get_objects_from_file(PATH_BICYCLE_DATA);
+$servicePackages = get_objects_from_file(PATH_SERVICEPACKAGES);
 
 ?>
 <!DOCTYPE html>
@@ -38,6 +39,17 @@ $bicycles = get_objects_from_file(PATH_BICYCLE_DATA);
         <h1>Bicycles</h1>
         <?php 
             foreach ($bicycles as $s) {
+                echo "<pre class=\"col-md-4\">";
+                echo $json_string = json_encode($s, JSON_PRETTY_PRINT);
+                echo "</pre>";
+            }
+        ?>
+    </div>
+
+    <div class="row">
+        <h1>Service Packages</h1>
+        <?php 
+            foreach ($servicePackages as $s) {
                 echo "<pre class=\"col-md-4\">";
                 echo $json_string = json_encode($s, JSON_PRETTY_PRINT);
                 echo "</pre>";

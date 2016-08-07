@@ -9,13 +9,13 @@
         "id": 2,
         "priceInCHF": 15.0,
         "translatedName": "Break block change",
-        "serviceType": 1
+        "serviceType": 2
     },
     {
         "id": 3,
         "priceInCHF": 25.0,
         "translatedName": "Chain change",
-        "serviceType": 2
+        "serviceType": 3
     },
     {
         "id": 4,

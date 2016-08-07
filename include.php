@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set("Europe/Zurich"); 
+
 const PATH_BICYCLE_DATA = "data/bicycles.json";
 const PATH_SERVICEREQUESTS_DATA = "data/serviceRequests.json";
 const PATH_SERVICEPACKAGES = "data/servicePackages.json";

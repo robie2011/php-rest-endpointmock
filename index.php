@@ -68,7 +68,7 @@ $app->get('/servicerequest', function() {
 $app->post('/servicerequest', function() use($app){
     $postData = json_decode($app->request->getBody(), true);
     $postData["id"] = date("U");
-    $postData["insertDate"] = date("Y-m-d H:m:s");
+    $postData["insertDate"] = date("Y-m-d H:i:s");
     $postData["media"] = array();
     $postData["serviceRequestStateId"] = 1;
     $postData["hasUpdates"] = 0;
@@ -102,7 +102,7 @@ $app->post('/servicerequest/:id/comment', function($id) use($app) {
     $serviceRequets = get_objects_from_file(PATH_SERVICEREQUESTS_DATA);
     $serviceRequest = find_by_id($serviceRequets, $id);
     
-    $comment = array('insertDate' => date("Y-m-d H:m:s"), "userName" => "Dummy User AG", "comment" => $postData["comment"]);
+    $comment = array('insertDate' => date("Y-m-d H:i:s"), "userName" => "Dummy User AG", "comment" => $postData["comment"]);
     array_push($serviceRequest->comments, $comment);
 
     put_objects_into_file($serviceRequets, PATH_SERVICEREQUESTS_DATA);
@@ -139,7 +139,7 @@ $app->post('/servicerequest/:id/offer', function($id) use($app) {
 
     $offer = array(
         "id" => date("U"),
-        "insertDate" => date("Y-m-d H:m:s"), 
+        "insertDate" => date("Y-m-d H:i:s"), 
         "appointmentDate" => "2016-10-14 08:30", 
         "providerName" => "Dummy Provider GmbH",
         "offerStateId" => 1,

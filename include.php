@@ -6,6 +6,7 @@ const PATH_SERVICEREQUESTS_DATA = "data/serviceRequests.json";
 const PATH_SERVICEPACKAGES = "data/servicePackages.json";
 const PATH_USERTELEPHONE = "data/user_telephones.json";
 const PATH_USERADDRESSES = "data/user_addresses.json";
+const PATH_HOLIDAYS = "data/holidays.json";
 const PATH_MEDIA_FOLDER = "downloadMedia/";
 
 function get_objects_from_file($pathToFile) {
@@ -14,7 +15,7 @@ function get_objects_from_file($pathToFile) {
 }
 
 function put_objects_into_file($objects, $pathToFile) {
-    $data = json_encode($objects);
+    $data = json_encode($objects, JSON_PRETTY_PRINT);
     file_put_contents($pathToFile, $data);
 }
 ?>

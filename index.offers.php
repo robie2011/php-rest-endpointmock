@@ -31,6 +31,7 @@ $app->get('/servicerequest/:id/serviceoffers/:offerid/deny', function($id, $offe
 $app->get('/servicerequest/:id/serviceoffers/:offerid/accept', function($id, $offerid){
     $serviceRequests = get_objects_from_file(PATH_SERVICEREQUESTS_DATA);
     $serviceRequest = find_by_id($serviceRequests, $id);
+    $serviceRequest->serviceRequestStateId = 2;
     $offer = find_by_id($serviceRequest->offers, $offerid);
     $offer->offerStateId = 2;
     put_objects_into_file($serviceRequests, PATH_SERVICEREQUESTS_DATA);

@@ -18,4 +18,9 @@ function put_objects_into_file($objects, $pathToFile) {
     $data = json_encode($objects, JSON_PRETTY_PRINT);
     file_put_contents($pathToFile, $data);
 }
+
+function getMimeType($pathToFile){
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    return finfo_file($finfo, $pathToFile);
+}
 ?>

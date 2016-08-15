@@ -55,10 +55,12 @@ $app->post('/servicerequest/:id/comment', function($id) use($app) {
 
 $app->post('/servicerequest/:id/upload', function($id) use($app) {
     $filename = uploadFile();
+    $targetFilename = PATH_MEDIA_FOLDER . $filename;
+
     $serviceRequests = get_objects_from_file(PATH_SERVICEREQUESTS_DATA);
     $serviceRequest = find_by_id($serviceRequests, $id);
 
-    $mimeType = strpos($filename, ".jp") > -1 ? "image/jpeg" : "audio/aac";
+    $mimeType = getMimeType($targetFilename);
 
     $media = array(
         "id"=> date("U"),

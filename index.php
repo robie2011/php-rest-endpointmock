@@ -22,9 +22,10 @@ function uploadFile () {
     }
     $imgs = array();
 
+    file_put_contents("c:/tmp/test.txt", print_r($_FILES['file'], true));
     $file = $_FILES['file'];
-    $extension = substr($file["name"], strpos($file["name"], "."));
-    $name = uniqid('img-'.date('Ymd').'-') . $extension;
+    $extension = substr($file["name"], strrpos($file["name"], "."));
+    $name = uniqid('file-'.date('U').'-') . $extension;
     $targetFilename = PATH_MEDIA_FOLDER . $name;
 
     $moveResult = move_uploaded_file($file["tmp_name"], $targetFilename);

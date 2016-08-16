@@ -2,6 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <?php
+        if(isset($_GET['autorefresh'])){
+        echo '<meta http-equiv="refresh" content="1">';
+        }
+    ?>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 

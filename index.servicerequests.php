@@ -47,21 +47,17 @@ $app->post('/servicerequest/:id/comment', function($id) use($app) {
     $serviceRequest = find_by_id($serviceRequets, $id);
     $serviceRequest->hasUpdates = 1;
 
-    $userName = "Dummy User";
-    if(isset($_POST["userName"])) {
-        $userName = $_POST["userName"];
-        $postData = $_POST;
-    }
+    $text = isset($_POST["comment"]) ? $_POST["comment"] : $postData["comment"];
 
     $comment = array(
         'insertDate' => date("Y-m-d H:i:s"),
-        "userName" => $userName,
-        "comment" => $postData["comment"]);
+        "userName" => "Sample User",
+        "comment" => $text );
     array_push($serviceRequest->comments, $comment);
 
     put_objects_into_file($serviceRequets, PATH_SERVICEREQUESTS_DATA);
 
-    if(isset($_POST["userName"])) {
+    if(isset($_POST["comment"])) {
         $app->response->headers->set("Location", $_SERVER['HTTP_REFERER']);
         return;
     }

@@ -1,6 +1,5 @@
 <?php
 $app->post('/servicerequest/:id/offer', function($id) use($app) {
-    $postData = json_decode($app->request->getBody(), true);
     $serviceRequests = get_objects_from_file(PATH_SERVICEREQUESTS_DATA);
     $serviceRequest = find_by_id($serviceRequests, $id);
     $serviceRequest->hasUpdates = 1;
@@ -15,8 +14,8 @@ $app->post('/servicerequest/:id/offer', function($id) use($app) {
     
     array_push($serviceRequest->offers, $offer);
     put_objects_into_file($serviceRequests, PATH_SERVICEREQUESTS_DATA);
-    $app->response->headers->set("Location", "/view.php");
-    echo json_encode($serviceRequest);
+    $app->response->headers->set("Location", $_SERVER['HTTP_REFERER']);
+    return;
 });
 
 $app->get('/servicerequest/:id/serviceoffers/:offerid/deny', function($id, $offerid){

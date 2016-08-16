@@ -23,6 +23,16 @@ function getRequestStatName($id){
     }
 }
 
+function getOfferStateName($id){
+    switch ($id){
+        case 1:
+            return "Open";
+        case 2:
+            return "Accepted";
+        case 3:
+            return "Rejected";
+    }
+}
 
 require_once 'header.php';
 ?>
@@ -49,6 +59,10 @@ require_once 'header.php';
         <tr>
             <td>Insert Date</td>
             <td><?= $request->insertDate ?></td>
+        </tr>
+        <tr>
+            <td>Phone</td>
+            <td><?= $request->telephone ?></td>
         </tr>
         <tr>
             <td>Desired Date</td>
@@ -91,15 +105,17 @@ require_once 'header.php';
         </tr>
         <tr>
             <td>Notes</td>
+            </audio>
             <td>
                 <p>Text: <?= $request->userNote ?></p>
                 <?php foreach ($request->media as $m): ?>
                     <p>
-                        <?php if(strpos($m["content-type"], "image") > -1): ?>
+                        <?php if(strpos($m->{'content-type'}, "image") >-1): ?>
                             <img style="max-height: 200px; max-width: 80%;" src="/downloadMedia/<?= $m->fileName ?>" alt="">
                         <?php else: ?>
                             <audio controls>
-                                <source src="/downloadMedia/<?= $m->fileName ?>" type="<?= $m["content-type"] ?>" />
+                                <source src="/downloadMedia/<?= $m->fileName ?>" type="audio/aac">
+                                Your browser does not support the audio element.
                             </audio>
                         <?php endif; ?>
                     </p>
@@ -109,12 +125,20 @@ require_once 'header.php';
         </tr>
     </table>
 
+    <h2>Offers</h2>
+    <form action="/servicerequest/<?= $request->id ?>/offer" method="POST">
+        <input class="btn btn-primary" type="submit" value="Send new offer">
+    </form>
+    <?php foreach ($request->offers as $o): ?>
+        <p><strong><?= $o->providerName?> (<?= time2str($o->insertDate) ?>):</strong></p>
+        <p>AppointmentDate: <?= $o->appointmentDate ?>, State: <?= getOfferStateName($o->offerStateId) ?></p>
+        <p><?= $o->message ?></p>
+    <?php endforeach; ?>
+
+
     <h2>Comments</h2>
-    <form action="/servicerequest/<?= $request->id ?>/comment" method="POST">
-        <textarea name="comment" class="form-control" rows="3"></textarea>
-        <br>
-        <input class="form-control" name="userName" value="Dummy Service Provider AG" type="text">
-        <br>
+    <form action="/servicerequest/<?= $request->id ?>/comment" method="POST" class="form form-inline">
+        <input class="form-control" name="comment" placeholder="Comment" type="text">
         <input class="btn btn-primary" type="submit">
     </form>
 

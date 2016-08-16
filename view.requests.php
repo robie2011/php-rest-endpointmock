@@ -129,24 +129,38 @@ require_once 'header.php';
     <form action="/servicerequest/<?= $request->id ?>/offer" method="POST">
         <input class="btn btn-primary" type="submit" value="Send new offer">
     </form>
+    <br/>
     <?php foreach ($request->offers as $o): ?>
-        <p><strong><?= $o->providerName?> (<?= time2str($o->insertDate) ?>):</strong></p>
-        <p>AppointmentDate: <?= $o->appointmentDate ?>, State: <?= getOfferStateName($o->offerStateId) ?></p>
-        <p><?= $o->message ?></p>
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <?= $o->providerName?> (<?= time2str($o->insertDate) ?>):
+            </div>
+            <div class="panel-body">
+                AppointmentDate: <?= $o->appointmentDate ?>, State: <?= getOfferStateName($o->offerStateId) ?>
+                <p><?= $o->message ?></p>
+            </div>
+        </div>
     <?php endforeach; ?>
 
 
     <h2>Comments</h2>
     <form action="/servicerequest/<?= $request->id ?>/comment" method="POST" class="form form-inline">
         <input class="form-control" name="comment" placeholder="Comment" type="text">
+        <br/><br/>
         <input class="btn btn-primary" type="submit">
     </form>
 
     <br>
     <br>
     <?php foreach ($request->comments as $c): ?>
-        <p><strong><?= $c->userName?> (<?= time2str($c->insertDate) ?>):</strong></p>
-        <p><?= $c->comment ?></p>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <?= $c->userName?> (<?= time2str($c->insertDate) ?>):</strong>
+            </div>
+            <div class="panel-body">
+                <?= $c->comment ?>
+            </div>
+        </div>
     <?php endforeach; ?>
 </div>
 <?php endif; ?>

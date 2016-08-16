@@ -7,7 +7,8 @@ $app->post('/oauth/token', function() use($app) {
         "expires_in" => 43199,
         "refresh_token" => "f38349f0-5142-46af-b7a4-7bbeb727e6ec",
         "scope" => "read write",
-        "token_type" => "bearer"
+        "token_type" => "bearer",
+        "languageCode" => "de"
         );
     echo json_encode($result);
 });
@@ -24,6 +25,5 @@ $app->get('/user/addresses', function(){
 $app->get('/holidays', function(){
     echo file_get_contents(PATH_HOLIDAYS);
 });
-
 
 ?>

@@ -1,19 +1,7 @@
 <?php
 
 require_once 'include.php';
-
 require 'vendor/autoload.php';
-
-function find_by_id($array_objects, $idToFind) {
-    $element = null;
-    foreach ($array_objects as $object) {
-        if ($object->id == $idToFind) {
-            $element = $object;
-            break;
-        }
-    }
-    return $element;
-}
 
 function uploadFile () {
     if (!isset($_FILES['file'])) {

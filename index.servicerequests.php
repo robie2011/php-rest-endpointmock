@@ -45,11 +45,26 @@ $app->post('/servicerequest/:id/comment', function($id) use($app) {
     $postData = json_decode($app->request->getBody(), true);
     $serviceRequets = get_objects_from_file(PATH_SERVICEREQUESTS_DATA);
     $serviceRequest = find_by_id($serviceRequets, $id);
-    
-    $comment = array('insertDate' => date("Y-m-d H:i:s"), "userName" => "Dummy User AG", "comment" => $postData["comment"]);
+    $serviceRequest->hasUpdates = 1;
+
+    $userName = "Dummy User";
+    if(isset($_POST["userName"])) {
+        $userName = $_POST["userName"];
+        $postData = $_POST;
+    }
+
+    $comment = array(
+        'insertDate' => date("Y-m-d H:i:s"),
+        "userName" => $userName,
+        "comment" => $postData["comment"]);
     array_push($serviceRequest->comments, $comment);
 
     put_objects_into_file($serviceRequets, PATH_SERVICEREQUESTS_DATA);
+
+    if(isset($_POST["userName"])) {
+        $app->response->headers->set("Location", $_SERVER['HTTP_REFERER']);
+        return;
+    }
     echo json_encode($serviceRequest);
 });
 

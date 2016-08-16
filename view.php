@@ -16,25 +16,13 @@ if (isset($_POST) && isset($_POST["action"])) {
     }
 }
 
-$serviceRequets = get_objects_from_file(PATH_SERVICEREQUESTS_DATA);
+$serviceRequests = get_objects_from_file(PATH_SERVICEREQUESTS_DATA);
 $bicycles = get_objects_from_file(PATH_BICYCLE_DATA);
 $servicePackages = get_objects_from_file(PATH_SERVICEPACKAGES);
 
+require_once 'header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
-    <!-- Latest compiled JavaScript -->
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
-  </head>
-  <body class="container">
     <div class="row">
         <h1>Actions</h1>
         <form action="view.php" method="POST">
@@ -44,7 +32,7 @@ $servicePackages = get_objects_from_file(PATH_SERVICEPACKAGES);
         </form>
         <h1>ServiceRequests</h1>
         <?php 
-            foreach ($serviceRequets as $s) {
+            foreach ($serviceRequests as $s) {
                 echo "<div class=\"col-md-6\">";
                 echo "<pre>";
                 echo $json_string = json_encode($s, JSON_PRETTY_PRINT);
@@ -76,8 +64,5 @@ $servicePackages = get_objects_from_file(PATH_SERVICEPACKAGES);
                 echo $json_string = json_encode($s, JSON_PRETTY_PRINT);
                 echo "</pre>";
             }
-        ?>
-    </div>
-  </body>
-</html>
-
+        require_once 'footer.php';
+            ?>

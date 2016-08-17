@@ -13,6 +13,10 @@ $app->post('/oauth/token', function() use($app) {
     echo json_encode($result);
 });
 
+$app->post('/auth/register', function() use($app) {
+    echo "OK";
+});
+
 // MISC
 $app->get('/user/telephone', function(){
     echo file_get_contents(PATH_USERTELEPHONE);

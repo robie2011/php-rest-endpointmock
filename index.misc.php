@@ -13,8 +13,8 @@ $app->post('/oauth/token', function() use($app) {
     echo json_encode($result);
 });
 
-$app->post('/auth/register', function() use($app) {
-    echo "OK";
+$app->post('/oauth/register', function() use($app) {
+    
 });
 
 // MISC

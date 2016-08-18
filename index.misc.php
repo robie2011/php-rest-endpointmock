@@ -14,7 +14,11 @@ $app->post('/oauth/token', function() use($app) {
 });
 
 $app->post('/oauth/register', function() use($app) {
-    
+
+});
+
+$app->post('/oauth/delete', function() use($app) {
+
 });
 
 // MISC

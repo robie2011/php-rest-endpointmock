@@ -6,8 +6,8 @@ $app->post('/servicerequest/:id/offer', function($id) use($app) {
 
     $offer = array(
         "id" => date("U"),
-        "insertDate" => date("Y-m-d H:i:s"), 
-        "appointmentDate" => "2016-10-14 08:30", 
+        "insertDate" => date("Y/m/d H:i:s"), 
+        "appointmentDate" => "2016/10/14 08:30", 
         "providerName" => "Dummy Provider GmbH",
         "offerStateId" => 1,
         "message" => "Test Offer");

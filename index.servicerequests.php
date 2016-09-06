@@ -12,7 +12,7 @@ $app->get('/servicerequest', function() {
 $app->post('/servicerequest', function() use($app){
     $postData = json_decode($app->request->getBody(), true);
     $postData["id"] = date("U");
-    $postData["insertDate"] = date("Y-m-d H:i:s");
+    $postData["insertDate"] = date("Y/m/d H:i:s");
     $postData["media"] = array();
     $postData["serviceRequestStateId"] = 1;
     $postData["hasUpdates"] = 0;
@@ -50,7 +50,7 @@ $app->post('/servicerequest/:id/comment', function($id) use($app) {
     $text = isset($_POST["comment"]) ? $_POST["comment"] : $postData["comment"];
 
     $comment = array(
-        'insertDate' => date("Y-m-d H:i:s"),
+        'insertDate' => date("Y/m/d H:i:s"),
         "userName" => "Sample User",
         "comment" => $text );
     array_push($serviceRequest->comments, $comment);
